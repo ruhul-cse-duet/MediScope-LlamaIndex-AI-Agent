@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    container_name: mediscope-api
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - mediscope-network
+
+  # Optional vLLM service (requires GPU + WSL2 Docker Desktop)
+  # Uncomment and configure based on your needs
+  # vllm:
+  #   image: vllm/vllm-openai:latest
+  #   container_name: mediscope-vllm
+  #   command: [
+  #     "--model", "OpenGVLab/Mini-InternVL2-1B-DA-Medical",
+  #     "--host", "0.0.0.0",
+  #     "--port", "8000",
+  #     "--dtype", "half",
+  #     "--max-model-len", "2048"
+  #   ]
+  #   ports:
+  #     - "8001:8000"
+  #   environment:
+  #     - CUDA_VISIBLE_DEVICES=0
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: 1
+  #             capabilities: [gpu]
+  #   networks:
+  #     - mediscope-network
+  #   restart: unless-stopped
+
+networks:
+  mediscope-network:
+    driver: bridge
+
+volumes:
+  data:
+  logs:
