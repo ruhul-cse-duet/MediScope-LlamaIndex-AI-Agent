@@ -1,0 +1,26 @@
+# LlamaIndex for RAG
+llama-index==0.12.52
+llama-index-embeddings-huggingface==0.5.5
+
+# Image processing
+pillow==12.0.0
+pytesseract==0.3.10
+
+# Speech processing
+faster-whisper==1.2.0
+gTTS==2.5.3
+TTS==0.22.0
+piper-tts=1.3.0
+
+# Vision model
+transformers==4.57.3
+torch==2.9.1
+torchvision==0.24.1
+accelerate==1.4.0
+sentence-transformers==5.1.2
+
+# Audio processing
+scipy==1.16.3
+
+
+
